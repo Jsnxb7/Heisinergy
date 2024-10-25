@@ -64,14 +64,16 @@ def save_to_json(start_time, end_time):
 
         time.sleep(5)
 
+# Set the duration for the threads to run (in seconds)
 Total_transactions = 10 
 start_time = time.time()
 end_time = start_time + Total_transactions
 
-
+# Create and start threads
 buy_thread = threading.Thread(target=buy_shares, args=(start_time, end_time))
 save_thread = threading.Thread(target=save_to_json, args=(start_time, end_time))
-
+sell_thread = threading.Thread(target= sell_shares, args=(start_time, end_time))
 buy_thread.start()
+sell_thread.start()
 save_thread.start()
 
