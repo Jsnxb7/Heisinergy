@@ -113,7 +113,6 @@ def login():
 def dashboard():
     return render_template('dashboard.html')
 
-from flask import request, jsonify
 
 @app.route('/save-user', methods=['POST'])
 def save_user():
@@ -121,10 +120,32 @@ def save_user():
     user_id = data.get('userID')  # Get the unique user ID
     user_name = data.get('userName')
     user_photo = data.get('userPhoto')
-    
-    print(f"Received user: {user_name} with ID: {user_id}")
-    return jsonify({"message": "User data saved successfully"}), 200
 
+        # Check that the user ID is provided
+    if not user_id:
+        return jsonify({"error": "UserID is required"}), 400
+
+    # Define the filename based on the user ID
+    filename = f"static/users/{user_id}.json"
+    filepath = os.path.join(filename)  # Saving in a specific folder
+    
+    # Ensure the users_data directory exists
+    os.makedirs("users_data", exist_ok=True)
+
+    # Prepare the data to save
+    user_data = {
+        "userID": user_id,
+        "userName": user_name,
+        "userPhoto": user_photo
+    }
+
+    # Write the user data to a new JSON file for each user
+    with open(filepath, "w") as file:
+        json.dump(user_data, file, indent=4)  # Writing in JSON format with indentation
+
+    print(f"User data for {user_name} (ID: {user_id}) has been saved to {filename}")
+    return jsonify({"message": "User data saved successfully"}), 200
+    
 
 @app.route('/test')
 def test():
