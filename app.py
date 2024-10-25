@@ -1,3 +1,7 @@
+from flask import Flask, request, jsonify, redirect, url_for, render_template, make_response
+from flask_cors import CORS
+from werkzeug.security import check_password_hash, generate_password_hash
+import os
 import json
 from dash import dcc, html
 import plotly.graph_objs as go
@@ -10,6 +14,7 @@ import dash
 
 # Flask app setup
 app = Flask(__name__)
+CORS(app)   
 
 # Setup Dash app to embed within Flask
 dash_app = dash.Dash(__name__, server=app, url_base_pathname='/graph/')
@@ -104,11 +109,16 @@ def update_graph_scatter(n):
 def login():
     return render_template('index.html')
 
+@app.route('/test')
+def test():
+    return "Server is running"
+
 # Flask route for graph page
 @app.route('/graph')
 def graph():
     return render_template('graph.html')
 
 if __name__ == '__main__':
+    app.run(host='localhost', port=5000, debug=True)
     app.wsgi_app = DispatcherMiddleware(app.wsgi_app, {'/dash': dash_app.server})
     app.run(debug=True)
