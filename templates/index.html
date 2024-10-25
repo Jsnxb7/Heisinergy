@@ -31,7 +31,7 @@
             </div>
             <div class="col-lg-4 text-center text-lg-end">
                 <div class="d-inline-flex align-items-center" style="height: 45px;">
-                    <a href="javascript:void(0);" class="btn btn-primary rounded-pill py-2 px-4 my-3 my-lg-0 flex-shrink-0" onclick="googleSignIn()">Login with Google</a>
+                    <a href="javascript:void(0);" class="btn btn-primary rounded-pill py-2 px-4 my-3 my-lg-0 flex-shrink-0" onclick="googleSignIn()">Sign-in</a>
                    
                 </div>
             </div>
@@ -108,9 +108,9 @@
 
     <!-- Firebase App (the core Firebase SDK) -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-app.js";
-        import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-auth.js";
-
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-app.js";
+        import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-auth.js";
+        
         const firebaseConfig = {
             apiKey: "AIzaSyADECwVMagfu4dH2XVX2uvrN9frBHCh5qg",
             authDomain: "hesinergy.firebaseapp.com",
