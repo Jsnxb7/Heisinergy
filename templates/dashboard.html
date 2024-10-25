@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - Hesinergy</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='web/dashboard.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <h2>Hesinergy</h2>
+            <ul>
+                <li><a href="/dashboard" class="active">Dashboard</a></li>
+                <li><a href="/graph">Stock Graph</a></li>
+                <li><a href="javascript:void(0);" onclick="logout()">Logout</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Top Bar -->
+            <div class="top-bar">
+                <h1>Dashboard</h1>
+                <div class="user-info">
+                    <img id="user-photo" src="" alt="User Photo">
+                    <span id="user-name"></span>
+                </div>
+            </div>
+
+            <!-- Content Section -->
+            <div class="content">
+                <!-- Trending Shares Section -->
+                <section class="trending-shares">
+                    <h2>Trending Shares</h2>
+                    <div class="shares-grid" id="shares-details">
+                        <!-- Example Card -->
+                        <div class="share-card">
+                            <h3>Company Name</h3>
+                            <p>Current Price: $123.45</p>
+                            <p>Change: +2.35%</p>
+                        </div>
+                        <!-- More cards can be dynamically added here -->
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript for session data and logout -->
+    <script>
+        document.getElementById('user-name').innerText = sessionStorage.getItem('userName');
+        document.getElementById('user-photo').src = sessionStorage.getItem('userPhoto');
+
+        function logout() {
+            sessionStorage.clear();
+            window.location.href = '/';
+        }
+    </script>
+</body>
+</html>

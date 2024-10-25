@@ -109,6 +109,26 @@ def update_graph_scatter(n):
 def login():
     return render_template('index.html')
 
+@app.route('/dashboard')
+def dashboard():
+    return render_template('dashboard.html')
+
+from flask import request, jsonify
+
+@app.route('/save-user', methods=['POST'])
+def save_user():
+    data = request.json
+    user_id = data.get('userID')  # Get the unique user ID
+    user_name = data.get('userName')
+    user_photo = data.get('userPhoto')
+    
+    # Example: Save this data to MongoDB
+    # user_collection.insert_one({"userID": user_id, "name": user_name, "photo": user_photo})
+    
+    print(f"Received user: {user_name} with ID: {user_id}")
+    return jsonify({"message": "User data saved successfully"}), 200
+
+
 @app.route('/test')
 def test():
     return "Server is running"

@@ -128,15 +128,41 @@
         const provider = new GoogleAuthProvider();
 
         window.googleSignIn = function() {
-            signInWithPopup(auth, provider)
-                .then((result) => {
-                    const user = result.user;
-                    console.log('User signed in:', user);
-                })
-                .catch((error) => {
-                    console.error('Error during Google Sign-in:', error);
-                });
-        };
+    signInWithPopup(auth, provider)
+        .then((result) => {
+            const user = result.user;
+            console.log('User signed in:', user); // Log the entire user object
+
+            const userID = user.uid; // Get the unique user ID
+            const userName = user.displayName;
+            const userPhoto = user.photoURL;
+
+            console.log('User ID:', userID); // Log the user ID to see if it is retrieved correctly
+
+            sessionStorage.setItem('userID', userID); // Store userID
+            sessionStorage.setItem('userName', userName);
+            sessionStorage.setItem('userPhoto', userPhoto);
+            
+            // Send userID, username, and photo to Flask backend
+            fetch('/save-user', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userID: userID, userName: userName, userPhoto: userPhoto })
+            }).then(response => {
+                if (response.ok) {
+                    console.log('User data saved to server');
+                    window.location.href = '/dashboard';
+                } else {
+                    console.error('Error saving user data');
+                }
+            });
+        })
+        .catch((error) => {
+            console.error('Error during Google Sign-in:', error);
+        });
+};
+
+
 
         onAuthStateChanged(auth, (user) => {
             if (user) {
