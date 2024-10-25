@@ -1,17 +1,16 @@
+import json
 from dash.dependencies import Output, Input
 import dash
-from dash import dcc
-from dash import html
-import plotly
-import random
+from dash import dcc, html
 import plotly.graph_objs as go
+import random
 from collections import deque
 
 X = deque(maxlen=20)
 X.append(1)
 
 Y = deque(maxlen=20)
-Y.append(1)
+Y.append(100)  # Starting stock price
 
 app = dash.Dash(__name__)
 
@@ -29,17 +28,23 @@ app.layout = html.Div([
     [Input('graph-update', 'n_intervals')]
 )
 def update_graph_scatter(n):
+    # Generate a new price with random fluctuation
+    new_price = Y[-1] + Y[-1] * random.uniform(-0.05, 0.05)
     X.append(X[-1] + 1)
-    Y.append(Y[-1] + Y[-1] * random.uniform(-0.1, 0.1))
+    Y.append(new_price)
 
-    data = plotly.graph_objs.Scatter(
+    # Save the latest data to a JSON file
+    data_to_save = {"X": list(X), "Y": list(Y)}
+    with open("stock_prices.json", "w") as f:
+        json.dump(data_to_save, f)
+
+    data = go.Scatter(
         x=list(X),
         y=list(Y),
         name='Scatter',
         mode='lines+markers'
     )
 
-    # Set the Y-axis tick values to reduce the spacing between them
     y_ticks = [round(y, 2) for y in range(int(min(Y)), int(max(Y)) + 1)]
 
     return {
@@ -48,11 +53,11 @@ def update_graph_scatter(n):
             xaxis=dict(range=[min(X), max(X)]),
             yaxis=dict(
                 range=[min(Y), max(Y)],
-                tickvals=y_ticks,  # Set the Y-axis ticks
-                ticktext=[str(tick) for tick in y_ticks]  # Custom text for ticks
+                tickvals=y_ticks,
+                ticktext=[str(tick) for tick in y_ticks]
             )
         )
-    }   
+    }
 
 if __name__ == '__main__':
     app.run_server(debug=True)
