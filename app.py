@@ -122,9 +122,6 @@ def save_user():
     user_name = data.get('userName')
     user_photo = data.get('userPhoto')
     
-    # Example: Save this data to MongoDB
-    # user_collection.insert_one({"userID": user_id, "name": user_name, "photo": user_photo})
-    
     print(f"Received user: {user_name} with ID: {user_id}")
     return jsonify({"message": "User data saved successfully"}), 200
 

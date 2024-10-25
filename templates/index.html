@@ -131,19 +131,17 @@
     signInWithPopup(auth, provider)
         .then((result) => {
             const user = result.user;
-            console.log('User signed in:', user); // Log the entire user object
-
-            const userID = user.uid; // Get the unique user ID
+            console.log('User signed in:', user); 
+            const userID = user.uid;
             const userName = user.displayName;
             const userPhoto = user.photoURL;
 
-            console.log('User ID:', userID); // Log the user ID to see if it is retrieved correctly
+            console.log('User ID:', userID); 
 
-            sessionStorage.setItem('userID', userID); // Store userID
+            sessionStorage.setItem('userID', userID); 
             sessionStorage.setItem('userName', userName);
             sessionStorage.setItem('userPhoto', userPhoto);
             
-            // Send userID, username, and photo to Flask backend
             fetch('/save-user', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
