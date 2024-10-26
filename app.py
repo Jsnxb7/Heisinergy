@@ -54,7 +54,7 @@ close_prices.append(Y[-1])
     [Input('graph-update', 'n_intervals')]
 )
 def update_graph_scatter(n):
-    new_price = Y[-1] + Y[-1] * random.uniform(-0.05, 0.05)
+    new_price = Y[-1] + Y[-1] * random.uniform(-0.02, 0.02)
     X.append(X[-1] + 1)
     Y.append(new_price)
 
