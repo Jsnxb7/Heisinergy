@@ -5,6 +5,7 @@
     <title>Dashboard - Hesinergy</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='web/dashboard.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/plotly.js"></script> <!-- Add Plotly.js for graphs -->
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -129,6 +130,41 @@
             margin: 5px 0;
             color: #555;
         }
+
+        .button-container {
+            margin: 20px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .stock-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+        }
+
+        .stock-button:hover {
+            background-color: #45a049;
+        }
+
+        /* Graph Container */
+        #graph-container {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .plotly-graph {
+            width: 100%;
+            height: 500px; /* Adjust height as needed */
+        }
     </style>
 </head>
 <body>
@@ -138,7 +174,6 @@
             <h2>Hesinergy</h2>
             <ul>
                 <li><a href="/dashboard" class="active">Dashboard</a></li>
-                <li><a href="/graph">Stock Graph</a></li>
                 <li><a href="javascript:void(0);" onclick="logout()">Logout</a></li>
             </ul>
         </nav>
@@ -156,66 +191,29 @@
 
             <!-- Content Section -->
             <div class="content">
-                <!-- Trending Shares Section -->
-                <section class="trending-shares">
-                    <h2>Trending Shares</h2>
-                    <div class="shares-grid" id="shares-details">
-                        <!-- Example Card 1 -->
-                        <div class="share-card">
-                            <h3>Apple Inc. (AAPL)</h3>
-                            <p>Current Price: $145.00</p>
-                            <p>Change: +1.25%</p>
-                        </div>
-                        <!-- Example Card 2 -->
-                        <div class="share-card">
-                            <h3>Microsoft Corp. (MSFT)</h3>
-                            <p>Current Price: $299.00</p>
-                            <p>Change: +0.85%</p>
-                        </div>
-                        <!-- Example Card 3 -->
-                        <div class="share-card">
-                            <h3>Amazon.com Inc. (AMZN)</h3>
-                            <p>Current Price: $3,210.00</p>
-                            <p>Change: +2.10%</p>
-                        </div>
-                        <!-- Example Card 4 -->
-                        <div class="share-card">
-                            <h3>Alphabet Inc. (GOOGL)</h3>
-                            <p>Current Price: $2,820.00</p>
-                            <p>Change: +1.50%</p>
-                        </div>
-                        <!-- Example Card 5 -->
-                        <div class="share-card">
-                            <h3>Tesla Inc. (TSLA)</h3>
-                            <p>Current Price: $720.00</p>
-                            <p>Change: +3.75%</p>
-                        </div>
-                        <!-- Example Card 6 -->
-                        <div class="share-card">
-                            <h3>NVIDIA Corp. (NVDA)</h3>
-                            <p>Current Price: $195.00</p>
-                            <p>Change: +2.30%</p>
-                        </div>
-                        <!-- Example Card 7 -->
-                        <div class="share-card">
-                            <h3>Meta Platforms Inc. (FB)</h3>
-                            <p>Current Price: $330.00</p>
-                            <p>Change: +4.15%</p>
-                        </div>
-                        <!-- Example Card 8 -->
-                        <div class="share-card">
-                            <h3>Walmart Inc. (WMT)</h3>
-                            <p>Current Price: $145.00</p>
-                            <p>Change: +0.95%</p>
-                        </div>
-                        <!-- More cards can be dynamically added here -->
-                    </div>
-                </section>
+
+                
+                <!-- Buttons for Each Brand's Graph -->
+                <div class="button-container">
+                    <button class="stock-button" onclick="loadGraph('FSLR')">View FSLR Graph</button>
+                    <button class="stock-button" onclick="loadGraph('SPWR')">View SPWR Graph</button>
+                    <button class="stock-button" onclick="loadGraph('ENPH')">View ENPH Graph</button>
+                    <button class="stock-button" onclick="loadGraph('CSIQ')">View CSIQ Graph</button>
+                    <button class="stock-button" onclick="loadGraph('RUN')">View RUN Graph</button>
+                    <button class="stock-button" onclick="loadGraph('NOVA')">View NOVA Graph</button>
+                    <button class="stock-button" onclick="loadGraph('NEE')">View NEE Graph</button>
+                    <button class="stock-button" onclick="loadGraph('SEDG')">View SEDG Graph</button>
+                </div>
+                
+                <!-- Graph Container -->
+                <div id="graph-container">
+                    <div id="graph" class="plotly-graph"></div>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- JavaScript for session data and logout -->
+    <!-- JavaScript for session data, graph loading, and logout -->
     <script>
         document.getElementById('user-name').innerText = sessionStorage.getItem('userName');
         document.getElementById('user-photo').src = sessionStorage.getItem('userPhoto');
@@ -224,6 +222,23 @@
             sessionStorage.clear();
             window.location.href = '/';
         }
+
+        function loadGraph(stockSymbol) {
+    // Clear the previous graph
+    const graphContainer = document.getElementById('graph-container');
+    graphContainer.innerHTML = ''; // Clear previous content
+
+    // Create an iframe to load the Dash app for the selected stock
+    const iframe = document.createElement('iframe');
+    iframe.src = `/graph/${stockSymbol}/`; // URL for the specific Dash graph
+    iframe.style.width = '100%';
+    iframe.style.height = '500px'; // Adjust height as needed
+    iframe.style.border = 'none';
+
+    // Append the iframe to the graph container
+    graphContainer.appendChild(iframe);
+}
+
     </script>
 </body>
 </html>
