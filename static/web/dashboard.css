@@ -246,3 +246,40 @@ body {
     margin: 5px 0;
     color: #555;
 }
+.environmental-data {
+    margin-top: 20px;
+}
+
+.environmental-data h2 {
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.environmental-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.environmental-card {
+    background-color: #1A1A2E; /* Dark background for cards */
+    color: #FFF; /* White text */
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.environmental-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.environmental-card h3 {
+    margin: 0 0 10px;
+}
+
+.environmental-card p {
+    margin: 5px 0;
+    font-size: 1.1rem;
+}

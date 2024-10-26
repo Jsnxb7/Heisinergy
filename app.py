@@ -8,13 +8,20 @@ import plotly.graph_objs as go
 import random
 from collections import deque
 from dash.dependencies import Output, Input
-from flask import Flask, render_template
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
 import dash
+from pymongo import MongoClient
+import datetime
 
 # Flask app setup
 app = Flask(__name__)
-CORS(app)   
+CORS(app)
+
+# MongoDB connection
+client = MongoClient("mongodb://localhost:27017/")  # Connect to the local MongoDB instance
+db = client.Hesinergy  # Use the 'Hesinergy' database
+savings_collection = db.savings  # Collection for energy savings data
+metrics_collection = db.metrics  # Collection for community metrics
 
 # Setup Dash app to embed within Flask
 dash_app = dash.Dash(__name__, server=app, url_base_pathname='/graph/')
@@ -47,7 +54,7 @@ close_prices.append(Y[-1])
     [Input('graph-update', 'n_intervals')]
 )
 def update_graph_scatter(n):
-    new_price = Y[-1] + Y[-1] * random.uniform(-0.05, 0.05)
+    new_price = Y[-1] + Y[-1] * random.uniform(-0.02, 0.02)
     X.append(X[-1] + 1)
     Y.append(new_price)
 
@@ -113,6 +120,16 @@ def login():
 def dashboard():
     return render_template('dashboard.html')
 
+@app.route('/api/environmental-data')
+def environmental_data():
+    # Mock data; replace this with actual logic to fetch real data
+    data = {
+        'co2_saved': random.randint(50, 200),  # Random CO2 saved in kg
+        'energy_saved': random.randint(1000, 5000),  # Random energy saved in kWh
+        'trees_planted': random.randint(0, 100),  # Random number of trees planted
+        'water_saved': random.randint(100, 500)  # Random water saved in liters
+    }
+    return jsonify(data)
 
 @app.route('/save-user', methods=['POST'])
 def save_user():
@@ -121,7 +138,7 @@ def save_user():
     user_name = data.get('userName')
     user_photo = data.get('userPhoto')
 
-        # Check that the user ID is provided
+    # Check that the user ID is provided
     if not user_id:
         return jsonify({"error": "UserID is required"}), 400
 
@@ -146,7 +163,6 @@ def save_user():
     print(f"User data for {user_name} (ID: {user_id}) has been saved to {filename}")
     return jsonify({"message": "User data saved successfully"}), 200
     
-
 @app.route('/test')
 def test():
     return "Server is running"
@@ -157,6 +173,5 @@ def graph():
     return render_template('graph.html')
 
 if __name__ == '__main__':
-    app.run(host='localhost', port=5000, debug=True)
     app.wsgi_app = DispatcherMiddleware(app.wsgi_app, {'/dash': dash_app.server})
-    app.run(debug=True)
+    app.run(host='localhost', port=5000, debug=True)

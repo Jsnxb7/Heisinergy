@@ -20,12 +20,12 @@
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 40px;
+            padding: 20px 40px; /* Reduced padding for a more compact layout */
         }
 
         .header {
             text-align: center;
-            margin-bottom: 60px;
+            margin-bottom: 40px; /* Reduced margin */
         }
 
         .header h1 {
@@ -48,7 +48,7 @@
             position: relative;
             width: 100%;
             padding-top: 56.25%; /* 16:9 Aspect Ratio */
-            margin-bottom: 60px;
+            margin-bottom: 40px; /* Reduced margin */
             box-shadow: 0 6px 30px rgba(0, 0, 0, 0.15);
             border-radius: 12px;
             overflow: hidden;
@@ -70,10 +70,10 @@
 
         .trade-section {
             background-color: white;
-            padding: 40px;
+            padding: 30px; /* Reduced padding */
             border-radius: 12px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            margin-bottom: 60px;
+            margin-bottom: 40px; /* Reduced margin */
             transition: transform 0.3s;
         }
 
@@ -82,7 +82,7 @@
         }
 
         .trade-section h2 {
-            margin-bottom: 30px;
+            margin-bottom: 20px; /* Reduced margin */
             color: #333;
             font-weight: 600;
             font-size: 1.8rem;
@@ -94,11 +94,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 20px;
+            gap: 15px; /* Reduced gap */
         }
 
         .trade-section input {
-            padding: 14px;
+            padding: 12px; /* Reduced padding */
             border: 1px solid #ddd;
             border-radius: 6px;
             flex: 1;
@@ -113,14 +113,14 @@
         }
 
         .trade-section button {
-            padding: 14px 24px;
+            padding: 12px 20px; /* Reduced padding */
             border: none;
             border-radius: 6px;
             cursor: pointer;
             transition: background-color 0.3s, transform 0.2s;
             font-weight: 600;
             font-size: 1.1rem;
-            flex: 0 0 140px; /* Fixed width for buttons */
+            flex: 0 0 120px; /* Fixed width for buttons */
             position: relative;
             overflow: hidden;
         }
@@ -144,7 +144,7 @@
 
         .footer {
             text-align: center;
-            padding: 20px;
+            padding: 15px; /* Reduced padding */
             background-color: #00f1bb;
             color: white;
             margin-top: 20px;
@@ -176,7 +176,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Live Stock Fluctuations</h1>
+            <h1>Hesinergy's Stock</h1>
             <p>Monitor your investments and make informed trading decisions with real-time data.</p>
         </div>
         <div class="iframe-container">
@@ -192,6 +192,8 @@
                 <button type="submit" class="buy-button">Buy</button>
                 <button type="submit" class="sell-button">Sell</button>
             </form>
+            <div id="error-message" style="color: red; margin-top: 10px;"></div> <!-- Error message area -->
+
         </div>
     </div>
     <div class="footer">
@@ -201,11 +203,21 @@
     <script>
         document.getElementById('trade-form').addEventListener('submit', function (event) {
             event.preventDefault();
-            const stockSymbol = document.getElementById('stock-symbol').value;
-            const quantity = document.getElementById('quantity').value;
-            const tradeType = event.submitter.classList.contains('buy-button') ? 'buy' : 'sell';
+            const stockSymbol = document.getElementById('stock-symbol').value.trim();
+            const quantity = parseInt(document.getElementById('quantity').value);
+            const errorMessageElement = document.getElementById('error-message');
+            errorMessageElement.textContent = ''; // Clear any previous error
 
-            // Handle buy/sell action (you can replace this with actual logic)
+            // Simple validation example
+            if (!stockSymbol || stockSymbol.length < 1) {
+                errorMessageElement.textContent = 'Please enter a valid stock symbol.';
+                return;
+            } else if (isNaN(quantity) || quantity < 1) {
+                errorMessageElement.textContent = 'Please enter a valid quantity.';
+                return;
+            }
+
+            const tradeType = event.submitter.classList.contains('buy-button') ? 'buy' : 'sell';
             alert(`You have chosen to ${tradeType} ${quantity} shares of ${stockSymbol}.`);
         });
     </script>

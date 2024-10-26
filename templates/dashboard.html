@@ -31,6 +31,29 @@
 
             <!-- Content Section -->
             <div class="content">
+                <!-- Environmental Metrics Section -->
+                <section class="environmental-data">
+                    <h2>Environmental Impact</h2>
+                    <div class="environmental-grid" id="environmental-details">
+                        <div class="environmental-card">
+                            <h3>CO<sub>2</sub> Emissions Saved</h3>
+                            <p id="co2-saved">0 kg</p>
+                        </div>
+                        <div class="environmental-card">
+                            <h3>Energy Saved</h3>
+                            <p id="energy-saved">0 kWh</p>
+                        </div>
+                        <div class="environmental-card">
+                            <h3>Trees Planted</h3>
+                            <p id="trees-planted">0 trees</p>
+                        </div>
+                        <div class="environmental-card">
+                            <h3>Water Saved</h3>
+                            <p id="water-saved">0 liters</p>
+                        </div>
+                    </div>
+                </section>
+
                 <!-- Trending Shares Section -->
                 <section class="trending-shares">
                     <h2>Trending Shares</h2>
@@ -47,58 +70,45 @@
                             <p>Current Price: $299.00</p>
                             <p>Change: +0.85%</p>
                         </div>
-                        <!-- Example Card 3 -->
-                        <div class="share-card">
-                            <h3>Amazon.com Inc. (AMZN)</h3>
-                            <p>Current Price: $3,210.00</p>
-                            <p>Change: +2.10%</p>
-                        </div>
-                        <!-- Example Card 4 -->
-                        <div class="share-card">
-                            <h3>Alphabet Inc. (GOOGL)</h3>
-                            <p>Current Price: $2,820.00</p>
-                            <p>Change: +1.50%</p>
-                        </div>
-                        <!-- Example Card 5 -->
-                        <div class="share-card">
-                            <h3>Tesla Inc. (TSLA)</h3>
-                            <p>Current Price: $720.00</p>
-                            <p>Change: +3.75%</p>
-                        </div>
-                        <!-- Example Card 6 -->
-                        <div class="share-card">
-                            <h3>NVIDIA Corp. (NVDA)</h3>
-                            <p>Current Price: $195.00</p>
-                            <p>Change: +2.30%</p>
-                        </div>
-                        <!-- Example Card 7 -->
-                        <div class="share-card">
-                            <h3>Meta Platforms Inc. (FB)</h3>
-                            <p>Current Price: $330.00</p>
-                            <p>Change: +4.15%</p>
-                        </div>
-                        <!-- Example Card 8 -->
-                        <div class="share-card">
-                            <h3>Walmart Inc. (WMT)</h3>
-                            <p>Current Price: $145.00</p>
-                            <p>Change: +0.95%</p>
-                        </div>
-                        <!-- More cards can be dynamically added here -->
+                        <!-- Additional example cards... -->
                     </div>
                 </section>
             </div>
         </div>
     </div>
 
-    <!-- JavaScript for session data and logout -->
+    <!-- JavaScript for session data and live environmental data -->
     <script>
         document.getElementById('user-name').innerText = sessionStorage.getItem('userName');
         document.getElementById('user-photo').src = sessionStorage.getItem('userPhoto');
-
+    
         function logout() {
             sessionStorage.clear();
             window.location.href = '/';
         }
+    
+        // Fetch real-time data for environmental metrics
+        async function fetchEnvironmentalData() {
+            try {
+                const response = await fetch('/api/environmental-data');
+                if (!response.ok) throw new Error('Network response was not ok');
+                const data = await response.json();
+    
+                // Update the UI with the fetched data
+                document.getElementById('co2-saved').innerText = data.co2_saved + " kg";
+                document.getElementById('energy-saved').innerText = data.energy_saved + " kWh";
+                document.getElementById('trees-planted').innerText = data.trees_planted + " trees";
+                document.getElementById('water-saved').innerText = data.water_saved + " liters";
+            } catch (error) {
+                console.error('Error fetching environmental data:', error);
+            }
+        }
+    
+        // Fetch data on page load
+        fetchEnvironmentalData();
+        // Fetch data every 10 seconds (10000 milliseconds)
+        setInterval(fetchEnvironmentalData, 10000);
     </script>
+    
 </body>
 </html>
