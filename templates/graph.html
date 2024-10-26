@@ -20,12 +20,12 @@
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px 40px; /* Reduced padding for a more compact layout */
+            padding: 40px;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 40px; /* Reduced margin */
+            margin-bottom: 60px;
         }
 
         .header h1 {
@@ -48,7 +48,7 @@
             position: relative;
             width: 100%;
             padding-top: 56.25%; /* 16:9 Aspect Ratio */
-            margin-bottom: 40px; /* Reduced margin */
+            margin-bottom: 60px;
             box-shadow: 0 6px 30px rgba(0, 0, 0, 0.15);
             border-radius: 12px;
             overflow: hidden;
@@ -70,10 +70,10 @@
 
         .trade-section {
             background-color: white;
-            padding: 30px; /* Reduced padding */
+            padding: 40px;
             border-radius: 12px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            margin-bottom: 40px; /* Reduced margin */
+            margin-bottom: 60px;
             transition: transform 0.3s;
         }
 
@@ -82,7 +82,7 @@
         }
 
         .trade-section h2 {
-            margin-bottom: 20px; /* Reduced margin */
+            margin-bottom: 30px;
             color: #333;
             font-weight: 600;
             font-size: 1.8rem;
@@ -94,11 +94,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 15px; /* Reduced gap */
+            gap: 20px;
         }
 
         .trade-section input {
-            padding: 12px; /* Reduced padding */
+            padding: 14px;
             border: 1px solid #ddd;
             border-radius: 6px;
             flex: 1;
@@ -113,14 +113,14 @@
         }
 
         .trade-section button {
-            padding: 12px 20px; /* Reduced padding */
+            padding: 14px 24px;
             border: none;
             border-radius: 6px;
             cursor: pointer;
             transition: background-color 0.3s, transform 0.2s;
             font-weight: 600;
             font-size: 1.1rem;
-            flex: 0 0 120px; /* Fixed width for buttons */
+            flex: 0 0 140px; /* Fixed width for buttons */
             position: relative;
             overflow: hidden;
         }
@@ -144,7 +144,7 @@
 
         .footer {
             text-align: center;
-            padding: 15px; /* Reduced padding */
+            padding: 20px;
             background-color: #00f1bb;
             color: white;
             margin-top: 20px;
@@ -185,7 +185,7 @@
 
         <!-- Trade Section -->
         <div class="trade-section">
-            <h2>Buy/Sell Stocks</h2>
+            <h2>Buy/ Sell Stocks</h2>
             <form id="trade-form">
                 <input type="text" id="stock-symbol" placeholder="Stock Symbol (e.g., AAPL)" required>
                 <input type="number" id="quantity" placeholder="Quantity" required min="1">
@@ -201,25 +201,26 @@
     </div>
 
     <script>
-        document.getElementById('trade-form').addEventListener('submit', function (event) {
-            event.preventDefault();
-            const stockSymbol = document.getElementById('stock-symbol').value.trim();
-            const quantity = parseInt(document.getElementById('quantity').value);
-            const errorMessageElement = document.getElementById('error-message');
-            errorMessageElement.textContent = ''; // Clear any previous error
+    document.getElementById('trade-form').addEventListener('submit', function (event) {
+        event.preventDefault();
+        const stockSymbol = document.getElementById('stock-symbol').value.trim();
+        const quantity = parseInt(document.getElementById('quantity').value);
+        const errorMessageElement = document.getElementById('error-message');
+        errorMessageElement.textContent = ''; // Clear any previous error
 
-            // Simple validation example
-            if (!stockSymbol || stockSymbol.length < 1) {
-                errorMessageElement.textContent = 'Please enter a valid stock symbol.';
-                return;
-            } else if (isNaN(quantity) || quantity < 1) {
-                errorMessageElement.textContent = 'Please enter a valid quantity.';
-                return;
-            }
+        // Simple validation example
+        if (!stockSymbol || stockSymbol.length < 1) {
+            errorMessageElement.textContent = 'Please enter a valid stock symbol.';
+            return;
+        } else if (isNaN(quantity) || quantity < 1) {
+            errorMessageElement.textContent = 'Please enter a valid quantity.';
+            return;
+        }
 
-            const tradeType = event.submitter.classList.contains('buy-button') ? 'buy' : 'sell';
-            alert(`You have chosen to ${tradeType} ${quantity} shares of ${stockSymbol}.`);
-        });
+        const tradeType = event.submitter.classList.contains('buy-button') ? 'buy' : 'sell';
+        alert(`You have chosen to ${tradeType} ${quantity} shares of ${stockSymbol}.`);
+    });
+
     </script>
 </body>
 
